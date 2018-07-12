@@ -1,0 +1,18 @@
+# Compiled source #
+###################
+*.dll
+*.exe
+__pycache__
+
+# Packages #
+############
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+*.db
+
+# OS generated files #
+######################
