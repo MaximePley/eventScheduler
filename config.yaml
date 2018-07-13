@@ -1,0 +1,19 @@
+datastore:
+  type: 'db'
+  fileName: '/UserService/users.db'
+  echo: True
+
+# Microservices dependancies
+userservice:
+  host: 'localhost'
+  port: 5000
+  debug: True
+
+eventservice:
+  host: 'localhost'
+  port: 5001
+  debug: True
+
+logLevel:
+  level: 'INFO'
+  fileName: 'execution.log'
