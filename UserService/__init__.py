@@ -1,13 +1,13 @@
 import os
 from flask import Flask
-from flask_restful import Api
+from flask_restful import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 
 
 app = Flask(__name__)
-api = Api(app)
+restAPI = Api(app)
 
 # Default config
 app.config.update(
