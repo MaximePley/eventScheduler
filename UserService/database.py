@@ -4,6 +4,16 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
 
+def getUser(username):
+    try:
+        query = db.session.query(data.User)
+        query = query.filter(data.User.username == username).first()
+        return query
+    except AttributeError:
+        logging.info('User not found')
+        return False
+
+
 def saveUser(user):
     try:
         db.session.add(user)
