@@ -1,12 +1,33 @@
-from UserService import app, db, data, database
+from UserService import app, db, restAPI, data, database
 from flask import redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_restful import Resource
+from requests import put, get
 
 
 @app.route("/", methods=['GET'])
 @app.route("/index", methods=['GET'])
 def index():
     return 'Welcome in the Event Scheduler app'
+
+
+class getUser(Resource):
+    def get(self, username):
+        user = database.getUser(username)
+        if user is None:
+            return {'user': 'Not found'}
+        else:
+            return {'user': {
+                'user': user.username,
+                'email': user.email,
+                'id': user.id,
+            }}
+
+    def put(self, username):
+        return
+
+
+restAPI.add_resource(getUser, '/user/<string:username>')
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -23,7 +44,7 @@ def logout():
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
-    user = data.User('jim', 'jim@gmail.com', 'jim')
+    user = data.User('harry', 'harry@gmail.com', 'harry')
     response = database.saveUser(user)
     if response is True:
         return (user.username + " has been added to the app")
