@@ -1,6 +1,7 @@
-from flask import Flask, make_response
+from flask import Flask
 from werkzeug.exceptions import NotFound, ServiceUnavailable
 import json
+from flask import redirect, url_for, request, jsonify, abort, make_response
 import requests
 import os
 import logging
@@ -42,28 +43,25 @@ def nice_json(arg):
 
 @app.route("/", methods=['GET'])
 def index():
-    return nice_json({
-        "user": "/",
-        "user_event": {
-            "title": "/users/event",
-            "description": "/users/",
-            "start_date": "/users/",
-            "end_date": "/users/"
-        }
-    })
+    return "<h1>welcome in the Event scheduler</h1>"
 
 
-@app.route("/users", methods=['GET'])
-def users_list():
-    return nice_json(users)
+@app.route("/<user>/events", methods=['GET'])
+def user(user):
 
+    urls = [
+        "http://127.0.0.1:5001/users/{}".format(user),
+        "http://127.0.0.1:5002/events/{}".format(user)
+    ]
+    response = {}
+    responses = []
+    for u in urls:
+        response = requests.get(u)
+        response = response.json()
+        responses.append(response)
+    output = {'user': responses[0], 'events': responses[1]}
 
-@app.route("/users/<username>", methods=['GET'])
-def user_record(username):
-    if username not in users:
-        raise NotFound
-
-    return nice_json(users[username])
+    return jsonify(output)
 
 
 if __name__ == "__main__":
