@@ -12,7 +12,7 @@ restAPI = Api(app)
 # Default config
 app.config.update(
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
-    SQLALCHEMY_DATABASE_URI='sqlite:///' + os.getcwd() + '\\UserService\\user.db'
+    SQLALCHEMY_DATABASE_URI='sqlite:///' + os.getcwd() + '\\EventService\\event.db'
 )
 
 db = SQLAlchemy(app)
@@ -20,4 +20,4 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 
-from UserService import api, data, database
+from EventService import api, data, database
