@@ -14,6 +14,10 @@ def getUser(username):
         return False
 
 
+def getAllUsers():
+    return db.session.query(data.User).all()
+
+
 def saveUser(user):
     try:
         db.session.add(user)

@@ -21,6 +21,11 @@ class User(UserMixin, db.Model):
         self.email = email
         self.password_hash = generate_password_hash(password)
 
+    def to_json(self):
+        return dict(id=self.id,
+                    username=self.username,
+                    email=self.email)
+
     def setPassword(password):
         password_hash = generate_password_hash(password)
         return password_hash
