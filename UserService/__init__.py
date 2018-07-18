@@ -1,4 +1,5 @@
 import os
+import publicapi
 from flask import Flask
 from flask_restful import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
@@ -12,7 +13,7 @@ restAPI = Api(app)
 # Default config
 app.config.update(
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
-    SQLALCHEMY_DATABASE_URI='sqlite:///' + os.getcwd() + '\\UserService\\user.db'
+    SQLALCHEMY_DATABASE_URI='sqlite:///' + os.getcwd() + publicapi.configRead()['dataUserStore']['fileName']
 )
 
 db = SQLAlchemy(app)

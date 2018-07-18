@@ -1,6 +1,6 @@
 dataUserStore:
   type: 'db'
-  fileName: '/UserService/users.db'
+  fileName: '/UserService/user.db'
   echo: True
 
 dataEventStore:
