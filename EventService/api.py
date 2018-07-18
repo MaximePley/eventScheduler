@@ -1,5 +1,5 @@
 from EventService import app, db, restAPI, data, database
-from flask import redirect, url_for
+from flask import redirect, url_for, request, jsonify, abort, make_response
 from flask_restful import Resource
 from requests import put, get
 from datetime import datetime
@@ -11,45 +11,87 @@ def index():
     return 'Welcome in the Event Service app'
 
 
-class getEvent(Resource):
-    def get(self, event_id):
-        event = database.getEvent(event_id)
-        if event is None:
-            return {'event': 'Not found'}
-        else:
-            start_date = str(datetime.strptime(str(event.startDate).split(".")[0], '%Y-%m-%d %H:%M:%S'))
-            end_date = str(datetime.strptime(str(event.endDate).split(".")[0], '%Y-%m-%d %H:%M:%S'))
-            return {'event': {
-                'event_title': event.title,
-                'event_content': event.content,
-                'id': event.id,
-                'start_date': start_date,
-                'end_date': end_date,
-                'recurrence': event.recurrence
-            }}
-
-
-restAPI.add_resource(getEvent, '/event/<string:event_id>')
-
-
-@app.route("/addevent", methods=['GET', 'POST'])
-def addEvent():
-    event = data.Event('Finish app2', 'write API2', datetime.now(), datetime.now(), datetime.now(), False, 'user1')
-    response = database.saveEvent(event)
-    if response is True:
-        return (event.title + " has been added to the app")
+@app.route("/events", methods=['GET', 'POST'])
+def events():
+    if request.method == "POST":
+        event = data.Event('Event bill 2', 'write API', datetime.now(), datetime.now(), datetime.now(), False, 'bill')
+        database.saveEvent(event)
+        obj = data.Event.to_json(event)
+        response = jsonify(obj)
+        response.status_code = 201
+        return response
     else:
-        return ('Event input error')
+        # GET
+        events = database.getAllEvents()
+        results = []
+
+        for event in events:
+            obj = data.Event.to_json(event)
+            results.append(obj)
+        response = jsonify(results)
+        response.status_code = 200
+        return response
 
 
-@app.route("/delete", methods=['GET', 'POST'])
-def delete():
-    event_id = '2'
-    response = database.deleteEvent(event_id)
-    if response is True:
-        return ("Event has been removed from the app")
+@app.route('/event/<id>', methods=['GET', 'PUT', 'DELETE'])
+def event(id):
+    event = database.getEvent(id)
+    if not event:
+        # Raise an HTTPException with a 404 not found status code
+        abort(404)
+
+    if request.method == 'DELETE':
+        database.deleteEvent(id)
+        return (
+            "Event {} deleted successfully".format(event.title)
+        ), 200
+
+    elif request.method == 'PUT':
+        title = str(request.args.get('title', 'Modified title'))
+        database.updateEventTitle(id, title)
+        obj = data.Event.to_json(event)
+        response = jsonify(obj)
+        response.status_code = 200
+        return response
     else:
-        return 'Event not found'
+        # GET
+        obj = data.Event.to_json(event)
+        response = jsonify(obj)
+        response.status_code = 200
+        return response
+
+
+@app.route('/events/<user>', methods=['GET', 'PUT', 'DELETE'])
+def eventByUser(user):
+    events = database.getEventByUser(user)
+    results = []
+    if not events:
+        # Raise an HTTPException with a 404 not found status code
+        abort(404)
+
+    if request.method == 'DELETE':
+        database.deleteEventbyUser(user)
+        return (
+            "Event from {} deleted successfully".format(user)
+        ), 200
+
+    elif request.method == 'PUT':
+        recurrence = True
+        database.updateEventRecurrenceByUser(user, recurrence)
+        for event in events:
+            obj = data.Event.to_json(event)
+            results.append(obj)
+        response = jsonify(results)
+        response.status_code = 200
+        return response
+    else:
+        # GET
+        for event in events:
+            obj = data.Event.to_json(event)
+            results.append(obj)
+        response = jsonify(results)
+        response.status_code = 200
+        return response
 
 
 @app.errorhandler(404)

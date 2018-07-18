@@ -27,3 +27,13 @@ class Event(db.Model):
         self.endDate = endDate
         self.recurrence = recurrence
         self.user = user
+
+    def to_json(self):
+        return dict(id=self.id,
+                    title=self.title,
+                    content=self.content,
+                    timestamp=self.timestamp,
+                    startDate=self.startDate,
+                    endDate=self.endDate,
+                    recurrence=self.recurrence,
+                    user=self.user)
