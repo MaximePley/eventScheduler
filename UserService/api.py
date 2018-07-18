@@ -7,7 +7,7 @@ from flask_restful import Resource
 @app.route("/", methods=['GET'])
 @app.route("/index", methods=['GET'])
 def index():
-    return 'Welcome in the Event Scheduler app'
+    return 'Welcome in the User service app'
 
 
 @app.route("/users", methods=['GET', 'POST'])
