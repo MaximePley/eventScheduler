@@ -2,7 +2,7 @@ import logging
 from flask_login import UserMixin
 from sqlalchemy import Column, Integer, String
 from werkzeug.security import generate_password_hash, check_password_hash
-from UserService import app, db, data
+from UserService import app, db, data, login
 
 
 class User(UserMixin, db.Model):
@@ -21,15 +21,14 @@ class User(UserMixin, db.Model):
         self.email = email
         self.password_hash = generate_password_hash(password)
 
-    def to_json(self):
-        return dict(id=self.id,
-                    username=self.username,
-                    email=self.email,
-                    password_hash=self.password_hash)
-
     def setPassword(password):
         password_hash = generate_password_hash(password)
         return password_hash
 
     def checkPassword(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))

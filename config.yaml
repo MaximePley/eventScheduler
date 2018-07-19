@@ -1,31 +1,18 @@
-dataUserStore:
+datastore:
   type: 'db'
-  fileName: '/UserService/user.db'
-  echo: True
-
-dataEventStore:
-  type: 'db'
-  fileName: '/EventService/event.db'
+  fileName: '/UserService/users.db'
   echo: True
 
 # Microservices dependancies
-publicapi:
+userservice:
   host: 'localhost'
   port: 5000
   debug: True
-  environment: 'development'
-
-userservice:
-  host: 'localhost'
-  port: 5001
-  debug: True
-  environment: 'development'
 
 eventservice:
   host: 'localhost'
-  port: 5002
+  port: 5001
   debug: True
-  environment: 'development'
 
 logLevel:
   level: 'INFO'

@@ -13,7 +13,7 @@ class Event(db.Model):
     timestamp = Column(DateTime, index=True, default=datetime.utcnow)
     startDate = Column(DateTime, index=True)
     endDate = Column(DateTime, index=True)
-    recurrence = Column(Boolean, default=True)
+    recurrence = Column(Boolean)
     user = Column(String(120))
 
     def __repr__(self):
@@ -27,13 +27,3 @@ class Event(db.Model):
         self.endDate = endDate
         self.recurrence = recurrence
         self.user = user
-
-    def to_json(self):
-        return dict(id=self.id,
-                    title=self.title,
-                    content=self.content,
-                    timestamp=self.timestamp,
-                    startDate=self.startDate,
-                    endDate=self.endDate,
-                    recurrence=self.recurrence,
-                    user=self.user)
