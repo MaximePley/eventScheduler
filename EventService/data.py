@@ -13,7 +13,7 @@ class Event(db.Model):
     timestamp = Column(DateTime, index=True, default=datetime.utcnow)
     startDate = Column(DateTime, index=True)
     endDate = Column(DateTime, index=True)
-    recurrence = Column(Boolean)
+    recurrence = Column(Boolean, default=True)
     user = Column(String(120))
 
     def __repr__(self):
