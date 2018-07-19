@@ -1,5 +1,5 @@
 import logging
-from UserService import db, data, login
+from UserService import db, data
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
