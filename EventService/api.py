@@ -14,7 +14,15 @@ def index():
 @app.route("/events", methods=['GET', 'POST'])
 def events():
     if request.method == "POST":
-        event = data.Event('Event bill 2', 'write API', datetime.now(), datetime.now(), datetime.now(), False, 'bill')
+        title = request.args.get('title')
+        content = request.args.get('content')
+        startDate = request.args.get('startDate')
+        startDate = datetime.strptime(startDate, "%d-%m-%Y-%H:%M")
+        endDate = request.args.get('endDate')
+        endDate = datetime.strptime(endDate, "%d-%m-%Y-%H:%M")
+        recurrence = bool(request.args.get('recurrence'))
+        user = request.args.get('user')
+        event = data.Event(title, content, datetime.now(), startDate, endDate, recurrence, user)
         database.saveEvent(event)
         obj = data.Event.to_json(event)
         response = jsonify(obj)
