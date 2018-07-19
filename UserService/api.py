@@ -10,10 +10,13 @@ def index():
     return 'Welcome in the User service app'
 
 
-@app.route("/users", methods=['GET', 'POST'])
+@app.route("/register", methods=['GET', 'POST'])
 def users():
     if request.method == "POST":
-        user = data.User('bob', 'bob@gmail.com', 'bob')
+        username = request.args.get('username')
+        email = request.args.get('email')
+        password = request.args.get('password')
+        user = data.User(username, email, password)
         database.saveUser(user)
         obj = data.User.to_json(user)
         response = jsonify(obj)
@@ -46,7 +49,7 @@ def user(username):
         ), 200
 
     elif request.method == 'PUT':
-        email = str(request.args.get('email', 'bob@gmail.com'))
+        email = str(request.args.get('email', 'bobby@gmail.com'))
         database.updateUserEmail(username, email)
         obj = data.User.to_json(user)
         response = jsonify(obj)
