@@ -1,5 +1,5 @@
 import logging
-from UserService import db, data, login
+from UserService import db, data
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -12,6 +12,10 @@ def getUser(username):
     except AttributeError:
         logging.info('User not found')
         return False
+
+
+def getAllUsers():
+    return db.session.query(data.User).all()
 
 
 def saveUser(user):
