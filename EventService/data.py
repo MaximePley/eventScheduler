@@ -12,8 +12,8 @@ class Event(db.Model):
     content = Column(String(500))
     timestamp = Column(DateTime, index=True, default=datetime.utcnow)
     startDate = Column(DateTime, index=True)
-    endDate = Column(DateTime, index=True)
-    recurrence = Column(Boolean, default=True)
+    endDate = Column(DateTime, index=True, default=None)
+    recurrence = Column(Boolean, default=None)
     user = Column(String(120))
 
     def __repr__(self):
