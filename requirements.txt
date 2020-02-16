@@ -24,7 +24,7 @@ python-dateutil==2.7.3
 python-editor==1.0.3
 pytz==2018.5
 PyYAML==3.13
-requests==2.19.1
+requests==2.20.0
 six==1.11.0
 SQLAlchemy==1.2.9
 swagger-spec-validator==2.3.1
