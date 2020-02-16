@@ -17,9 +17,9 @@ def events():
         title = request.args.get('title')
         content = request.args.get('content')
         startDate = request.args.get('startDate')
-        startDate = datetime.strptime(startDate, "%d-%m-%Y-%H:%M")
+        startDate = datetime.strptime(startDate, "%Y-%m-%d %H:%M:%S")
         endDate = request.args.get('endDate')
-        endDate = datetime.strptime(endDate, "%d-%m-%Y-%H:%M")
+        endDate = datetime.strptime(endDate, "%Y-%m-%d %H:%M:%S")
         recurrence = bool(request.args.get('recurrence'))
         user = request.args.get('user')
         event = data.Event(title, content, datetime.now(), startDate, endDate, recurrence, user)
@@ -45,8 +45,7 @@ def events():
 def event(id):
     event = database.getEvent(id)
     if not event:
-        # Raise an HTTPException with a 404 not found status code
-        abort(404)
+        return 'Event not found'
 
     if request.method == 'DELETE':
         database.deleteEvent(id)
@@ -75,7 +74,7 @@ def eventByUser(user):
     results = []
     if not events:
         # Raise an HTTPException with a 404 not found status code
-        abort(404)
+        return('No event found')
 
     if request.method == 'DELETE':
         database.deleteEventbyUser(user)
