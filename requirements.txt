@@ -29,5 +29,5 @@ six==1.11.0
 SQLAlchemy==1.2.9
 swagger-spec-validator==2.3.1
 typing==3.6.4
-urllib3==1.23
+urllib3==1.24.2
 Werkzeug==0.15.3
